@@ -88,8 +88,12 @@ public class LogScrapper {
         		new CallerRunsPolicy());
         }
         CustomThreadPoolExecutor(){
-        	this(10, 20, 1, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(20));
-        }
+        	this(Runtime.getRuntime().availableProcessors(),
+					Runtime.getRuntime().availableProcessors()*2,
+					1, TimeUnit.SECONDS,
+					new ArrayBlockingQueue<Runnable>(20));
+			System.out.println("No of available processors: " + Runtime.getRuntime().availableProcessors());
+		}
 
         private final ThreadLocal elapsed_time = new ThreadLocal();
 
@@ -108,6 +112,7 @@ public class LogScrapper {
 
     static class SearchThreadFactory implements ThreadFactory {
        int count;
+       @Override
 	   public Thread newThread(Runnable r) {
 	   	 count++;
 	     return new Thread(r, "SearchThread_"+count);

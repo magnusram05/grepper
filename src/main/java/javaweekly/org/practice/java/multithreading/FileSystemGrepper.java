@@ -32,6 +32,7 @@ public class FileSystemGrepper implements Grepper<String> {
 		return filtered;
 	};
 
+	@Override
 	public List<String> grep(String file, final String searchString){
 
 		try (BufferedReader reader = new BufferedReader(new FileReader(

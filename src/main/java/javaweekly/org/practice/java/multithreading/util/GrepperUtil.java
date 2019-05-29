@@ -7,7 +7,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -20,13 +19,7 @@ public class GrepperUtil {
                 .filter(Files::isRegularFile)
                 .map(Path::toAbsolutePath)
                 .map(Path::toString)
-                .map((filePathString)->
-                        callableSearchTasks.apply(filePathString, searchString))
+                .map((filePathString) -> (Callable<List<String>>)grepper.grep(filePathString, searchString))
                 .collect(Collectors.toList());
     }
-
-   public static BiFunction<String, String, Callable<List<String>>> callableSearchTasks = (filePathString, searchString)-> {
-        final Callable<List<String>> listCallable = () -> grepper.grep(filePathString, searchString);
-        return listCallable;
-    };
 }
